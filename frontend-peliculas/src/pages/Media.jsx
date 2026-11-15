@@ -199,55 +199,40 @@ export default function Media() {
         </div>
       </form>
 
-      <div className="overflow-x-auto rounded bg-white shadow">
-        <table className="w-full text-left text-sm">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="px-4 py-3">Portada</th>
-              <th className="px-4 py-3">Serial</th>
-              <th className="px-4 py-3">Título</th>
-              <th className="px-4 py-3">Año</th>
-              <th className="px-4 py-3">Género</th>
-              <th className="px-4 py-3">Director</th>
-              <th className="px-4 py-3">Productora</th>
-              <th className="px-4 py-3">Tipo</th>
-              <th className="px-4 py-3">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((item) => (
-              <tr key={item._id} className="border-t">
-                <td className="px-4 py-3">
-                  {item.imagenPortada && (
-                    <img src={item.imagenPortada} alt={item.titulo} className="h-16 w-12 rounded object-cover" />
-                  )}
-                </td>
-                <td className="px-4 py-3">{item.serial}</td>
-                <td className="px-4 py-3">{item.titulo}</td>
-                <td className="px-4 py-3">{item.anioEstreno}</td>
-                <td className="px-4 py-3">{item.genero?.nombre}</td>
-                <td className="px-4 py-3">{item.director?.nombres}</td>
-                <td className="px-4 py-3">{item.productora?.nombre}</td>
-                <td className="px-4 py-3">{item.tipo?.nombre}</td>
-                <td className="px-4 py-3">
-                  <div className="flex gap-2">
-                    <button onClick={() => editar(item)} className="rounded bg-yellow-500 px-3 py-1 text-white hover:bg-yellow-600">
-                      Editar
-                    </button>
-                    <button onClick={() => eliminar(item._id)} className="rounded bg-red-600 px-3 py-1 text-white hover:bg-red-700">
-                      Eliminar
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-            {items.length === 0 && (
-              <tr>
-                <td colSpan="9" className="px-4 py-6 text-center text-gray-500">No hay registros</td>
-              </tr>
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {items.map((item) => (
+          <div key={item._id} className="flex flex-col overflow-hidden rounded bg-white shadow">
+            {item.imagenPortada ? (
+              <img src={item.imagenPortada} alt={item.titulo} className="h-64 w-full object-cover" />
+            ) : (
+              <div className="flex h-64 items-center justify-center bg-gray-200 text-gray-500">Sin portada</div>
             )}
-          </tbody>
-        </table>
+            <div className="flex flex-1 flex-col gap-1 p-4">
+              <h2 className="text-lg font-bold">{item.titulo}</h2>
+              <p className="text-sm text-gray-500">
+                {item.tipo?.nombre} · {item.anioEstreno} · {item.genero?.nombre}
+              </p>
+              <p className="line-clamp-3 text-sm text-gray-600">{item.sinopsis}</p>
+              <p className="text-sm">Director: {item.director?.nombres}</p>
+              <p className="text-sm">Productora: {item.productora?.nombre}</p>
+              <p className="text-xs text-gray-400">Serial: {item.serial}</p>
+              <p className="text-xs text-gray-400">
+                Creada: {new Date(item.fechaCreacion).toLocaleDateString('es-CO')}
+              </p>
+              <div className="mt-3 flex gap-2">
+                <button onClick={() => editar(item)} className="rounded bg-yellow-500 px-3 py-1 text-white hover:bg-yellow-600">
+                  Editar
+                </button>
+                <button onClick={() => eliminar(item._id)} className="rounded bg-red-600 px-3 py-1 text-white hover:bg-red-700">
+                  Eliminar
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+        {items.length === 0 && (
+          <p className="col-span-full text-center text-gray-500">No hay registros</p>
+        )}
       </div>
     </div>
   )
