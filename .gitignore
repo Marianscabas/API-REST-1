@@ -1,1 +1,3 @@
 api-peliculas/seed.js
+node_modules/
+.env
